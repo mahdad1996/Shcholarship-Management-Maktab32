@@ -25,7 +25,7 @@ public class RequestScholarshipByStudentUseCaseImpl implements RequestScholarshi
                 Connection connection=null;
                 try {
                     connection = DatabaseConfig.getDatabaseConnection();
-                    String sql = "INSERT INTO scholarship VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+                    String sql = "INSERT INTO scholarship(status, name, family, nationalCode, lastUni, lastDegree, lastField, lastScore, applyUni, applyDegree, applyField, applyDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
                     PreparedStatement preparedStatement = connection.prepareStatement(sql);
                     preparedStatement.setString(1,scholarship.getStatus());
                     preparedStatement.setString(2,scholarship.getName());

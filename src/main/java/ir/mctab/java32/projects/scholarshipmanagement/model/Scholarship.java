@@ -40,6 +40,25 @@ public class Scholarship {
         this.applyDate = applyDate;
     }
 
+    public Scholarship(String status, String name, String family, String nationalCode, String lastUni, String lastDegree, String lastField, Float lastScore, String applyUni, String applyDegree, String applyField, String applyDate) {
+        this.status = status;
+        this.name = name;
+        this.family = family;
+        this.nationalCode = nationalCode;
+        this.lastUni = lastUni;
+        this.lastDegree = lastDegree;
+        this.lastField = lastField;
+        this.lastScore = lastScore;
+        this.applyUni = applyUni;
+        this.applyDegree = applyDegree;
+        this.applyField = applyField;
+        this.applyDate = applyDate;
+    }
+
+    public Scholarship() {
+
+    }
+
     public Long getId() {
         return id;
     }

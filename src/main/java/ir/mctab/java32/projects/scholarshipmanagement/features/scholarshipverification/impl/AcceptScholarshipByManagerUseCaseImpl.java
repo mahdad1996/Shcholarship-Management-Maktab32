@@ -22,7 +22,7 @@ public class AcceptScholarshipByManagerUseCaseImpl implements AcceptScholarshipB
             try {
                 Connection connection = DatabaseConfig.getDatabaseConnection();
                 // sql
-                String sql = "update scholarship set status = 'AcceptedBySupervisor' " +
+                String sql = "update scholarship set status = 'AcceptedByManager' " +
                         "where id = ?";
                 // execute
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);

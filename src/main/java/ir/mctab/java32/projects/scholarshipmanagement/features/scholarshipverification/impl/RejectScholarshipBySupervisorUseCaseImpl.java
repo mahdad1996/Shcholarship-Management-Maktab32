@@ -22,7 +22,7 @@ public class RejectScholarshipBySupervisorUseCaseImpl implements RejectScholarsh
             try {
                 Connection connection = DatabaseConfig.getDatabaseConnection();
                 // sql
-                String sql = "update scholarship set status = 'RequestedByStudent' " +
+                String sql = "update scholarship set status = 'RejectedBySupervisor' " +
                         "where id = ?";
                 // execute
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
