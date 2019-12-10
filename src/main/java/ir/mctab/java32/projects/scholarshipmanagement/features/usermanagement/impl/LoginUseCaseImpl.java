@@ -31,6 +31,8 @@ public class LoginUseCaseImpl implements LoginUseCase {
                   resultSet.getString("role")
                 );
                 AuthenticationService.getInstance().setLoginUser(user);
+
+
                 return user;
             }
         } catch (ClassNotFoundException e) {

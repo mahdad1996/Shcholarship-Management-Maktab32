@@ -4,23 +4,50 @@ import ir.mctab.java32.projects.scholarshipmanagement.core.annotations.Service;
 import ir.mctab.java32.projects.scholarshipmanagement.core.annotations.UseCase;
 import ir.mctab.java32.projects.scholarshipmanagement.core.config.DatabaseConfig;
 import ir.mctab.java32.projects.scholarshipmanagement.core.share.AuthenticationService;
+import ir.mctab.java32.projects.scholarshipmanagement.core.share.LogUseCaseImpl;
 import ir.mctab.java32.projects.scholarshipmanagement.features.scholarshipverification.usecases.RequestScholarshipByStudentUseCase;
+import ir.mctab.java32.projects.scholarshipmanagement.model.Log;
 import ir.mctab.java32.projects.scholarshipmanagement.model.Scholarship;
 import ir.mctab.java32.projects.scholarshipmanagement.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 public class RequestScholarshipByStudentUseCaseImpl implements RequestScholarshipByStudentUseCase {
-    public boolean request(Scholarship scholarship) {
+    public boolean request() {
 
         User loginUser = AuthenticationService.getInstance().getLoginUser();
         if (loginUser != null) {
             if (loginUser.getRole().equals("Student")) {
+                Scanner scanner = new Scanner(System.in);
+                System.out.println("Enter name:");
+                String name = scanner.next();
+                System.out.println("Enter Familly:");
+                String familly = scanner.next();
+                System.out.println("Enter National Code:");
+                String nationalCode = scanner.next();
+                System.out.println("Enter name of your Last University:");
+                String lastUni = scanner.next();
+                System.out.println("Enter your Last Degree:");
+                String lastDegree = scanner.next();
+                System.out.println("Enter your Last Field:");
+                String lastField = scanner.next();
+                System.out.println("Enter your Last Score:");
+                Float lastScore = scanner.nextFloat();
+                System.out.println("Which university you want to apply:");
+                String applyUni = scanner.next();
+                System.out.println("Which Degree you wish to get:");
+                String applyDegree = scanner.next();
+                System.out.println("Which field you want to apply:");
+                String applyField = scanner.next();
+                System.out.println("Enter Apply Date:");
+                String applyDate = scanner.next();
+                String status = "RequestedByStudent";
+                Scholarship scholarship = new Scholarship(status,name,familly,nationalCode,lastUni,lastDegree,lastField,lastScore,applyUni,applyDegree,applyField,applyDate);
 
                 Connection connection=null;
                 try {
@@ -41,6 +68,13 @@ public class RequestScholarshipByStudentUseCaseImpl implements RequestScholarshi
                     preparedStatement.setString(12,scholarship.getApplyDate());
                     int i = preparedStatement.executeUpdate();
                     if(i==1){
+                        String action = scholarship.getName() + " " + scholarship.getFamily() + " Requested a scolarship";
+                        String date = LocalDateTime.now().toString();
+                        Long id = AuthenticationService.getInstance().getLoginUser().getId();
+                        Log log = new Log(action,date,id);
+                        LogUseCaseImpl logUseCase = new LogUseCaseImpl();
+                        logUseCase.commitLog(log);
+
                         return true;
                     }
                 } catch (ClassNotFoundException e) {

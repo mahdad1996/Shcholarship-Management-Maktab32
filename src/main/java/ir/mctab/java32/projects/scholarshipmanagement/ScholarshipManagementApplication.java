@@ -1,9 +1,12 @@
 package ir.mctab.java32.projects.scholarshipmanagement;
 
+import ir.mctab.java32.projects.scholarshipmanagement.core.share.AuthenticationService;
 import ir.mctab.java32.projects.scholarshipmanagement.features.scholarshipverification.impl.*;
 import ir.mctab.java32.projects.scholarshipmanagement.features.scholarshipverification.usecases.*;
 import ir.mctab.java32.projects.scholarshipmanagement.features.usermanagement.impl.LoginUseCaseImpl;
+import ir.mctab.java32.projects.scholarshipmanagement.features.usermanagement.impl.LogoutUseCaseImpl;
 import ir.mctab.java32.projects.scholarshipmanagement.features.usermanagement.usecases.LoginUseCase;
+import ir.mctab.java32.projects.scholarshipmanagement.features.usermanagement.usecases.LogoutUseCase;
 import ir.mctab.java32.projects.scholarshipmanagement.model.Scholarship;
 import ir.mctab.java32.projects.scholarshipmanagement.model.User;
 
@@ -30,6 +33,11 @@ public class ScholarshipManagementApplication {
                 if (user != null) {
                     System.out.println(" Login successful by " + user.getRole());
                 }
+            }
+            //log out
+            if (command.equals("logout")) {
+                LogoutUseCase logoutUseCase = new LogoutUseCaseImpl();
+                logoutUseCase.logout();
             }
             // find scholarship by supervisor
             if (command.equals("svlist")) {
@@ -99,32 +107,10 @@ public class ScholarshipManagementApplication {
             //request by student
             if (command.equals("request")) {
                 RequestScholarshipByStudentUseCase requestScholarshipByStudentUseCase = new RequestScholarshipByStudentUseCaseImpl();
-                System.out.println("Enter name:");
-                String name = scanner.next();
-                System.out.println("Enter Familly:");
-                String familly = scanner.next();
-                System.out.println("Enter National Code:");
-                String nationalCode = scanner.next();
-                System.out.println("Enter name of your Last University:");
-                String lastUni = scanner.next();
-                System.out.println("Enter your Last Degree:");
-                String lastDegree = scanner.next();
-                System.out.println("Enter your Last Field:");
-                String lastField = scanner.next();
-                System.out.println("Enter your Last Score:");
-                Float lastScore = scanner.nextFloat();
-                System.out.println("Which university you want to apply:");
-                String applyUni = scanner.next();
-                System.out.println("Which Degree you wish to get:");
-                String applyDegree = scanner.next();
-                System.out.println("Which field you want to apply:");
-                String applyField = scanner.next();
-                System.out.println("Enter Apply Date:");
-                String applyDate = scanner.next();
-                String status = "RequestedByStudent";
-                Scholarship scholarship = new Scholarship(status,name,familly,nationalCode,lastUni,lastDegree,lastField,lastScore,applyUni,applyDegree,applyField,applyDate);
-                requestScholarshipByStudentUseCase.request(scholarship);
-                System.out.println("Done.");
+                boolean x = requestScholarshipByStudentUseCase.request();
+                if(x){
+                    System.out.println("Done.");
+                }
             }
             //find by student
             if (command.equals("stfind")) {
@@ -145,7 +131,14 @@ public class ScholarshipManagementApplication {
                 }
             }
             //----------------------------------------End Unoversity Job
+            //-----------------------------------------Start Dashboard Job
 
+            if(command.equals("dashboard")){
+                DashboardUseCase dashboardUseCase = new DashboardUseCaseImpl();
+                dashboardUseCase.dashboard();
+            }
+
+            //------------------------------------------End Dashboard Job
 
         }
     }
