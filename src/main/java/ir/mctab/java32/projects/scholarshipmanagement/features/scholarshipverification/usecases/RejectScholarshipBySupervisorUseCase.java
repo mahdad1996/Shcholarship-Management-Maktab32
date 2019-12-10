@@ -4,5 +4,5 @@ import ir.mctab.java32.projects.scholarshipmanagement.core.annotations.UseCase;
 
 @UseCase
 public interface RejectScholarshipBySupervisorUseCase {
-    void reject(Long id);
+    void reject(Long scholarshipId);
 }
