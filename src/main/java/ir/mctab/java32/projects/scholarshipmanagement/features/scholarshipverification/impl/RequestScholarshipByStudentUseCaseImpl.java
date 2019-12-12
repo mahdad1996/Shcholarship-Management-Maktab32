@@ -10,9 +10,7 @@ import ir.mctab.java32.projects.scholarshipmanagement.model.Log;
 import ir.mctab.java32.projects.scholarshipmanagement.model.Scholarship;
 import ir.mctab.java32.projects.scholarshipmanagement.model.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -53,7 +51,7 @@ public class RequestScholarshipByStudentUseCaseImpl implements RequestScholarshi
                 try {
                     connection = DatabaseConfig.getDatabaseConnection();
                     String sql = "INSERT INTO scholarship(status, name, family, nationalCode, lastUni, lastDegree, lastField, lastScore, applyUni, applyDegree, applyField, applyDate) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-                    PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                    PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                     preparedStatement.setString(1,scholarship.getStatus());
                     preparedStatement.setString(2,scholarship.getName());
                     preparedStatement.setString(3,scholarship.getFamily());
@@ -75,6 +73,14 @@ public class RequestScholarshipByStudentUseCaseImpl implements RequestScholarshi
                         LogUseCaseImpl logUseCase = new LogUseCaseImpl();
                         logUseCase.commitLog(log);
 
+                        ResultSet rs = preparedStatement.getGeneratedKeys();
+                        Long generatedKey = null;
+                        if (rs.next()) {
+                            generatedKey = rs.getLong(1);
+                        }
+                        scholarship.setId(generatedKey);
+
+                        System.out.println(scholarship);
                         return true;
                     }
                 } catch (ClassNotFoundException e) {

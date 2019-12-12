@@ -66,7 +66,7 @@ public class ScholarshipManagementApplication {
                             //get status of student
                             FindScholarshipByStudentUseCase findScholarshipByStudentUseCase = new FindScholarshipByStudentUseCaseImpl();
                             System.out.println("Scholarship Id: ");
-                            String scholarshipId = scanner.nextLine();
+                            String scholarshipId = scanner.next();
                             Scholarship scholarship = findScholarshipByStudentUseCase.find(Long.parseLong(scholarshipId));
                             System.out.println(scholarship.toString());
                             break ;
