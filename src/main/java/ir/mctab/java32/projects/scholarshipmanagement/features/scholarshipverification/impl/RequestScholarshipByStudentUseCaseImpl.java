@@ -1,7 +1,6 @@
 package ir.mctab.java32.projects.scholarshipmanagement.features.scholarshipverification.impl;
 
 import ir.mctab.java32.projects.scholarshipmanagement.core.annotations.Service;
-import ir.mctab.java32.projects.scholarshipmanagement.core.annotations.UseCase;
 import ir.mctab.java32.projects.scholarshipmanagement.core.config.DatabaseConfig;
 import ir.mctab.java32.projects.scholarshipmanagement.core.share.AuthenticationService;
 import ir.mctab.java32.projects.scholarshipmanagement.core.share.LogUseCaseImpl;
@@ -11,6 +10,8 @@ import ir.mctab.java32.projects.scholarshipmanagement.model.Scholarship;
 import ir.mctab.java32.projects.scholarshipmanagement.model.User;
 
 import java.sql.*;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -66,12 +67,7 @@ public class RequestScholarshipByStudentUseCaseImpl implements RequestScholarshi
                     preparedStatement.setString(12,scholarship.getApplyDate());
                     int i = preparedStatement.executeUpdate();
                     if(i==1){
-                        String action = scholarship.getName() + " " + scholarship.getFamily() + " Requested a scolarship";
-                        String date = LocalDateTime.now().toString();
-                        Long id = AuthenticationService.getInstance().getLoginUser().getId();
-                        Log log = new Log(action,date,id);
-                        LogUseCaseImpl logUseCase = new LogUseCaseImpl();
-                        logUseCase.commitLog(log);
+
 
                         ResultSet rs = preparedStatement.getGeneratedKeys();
                         Long generatedKey = null;
@@ -79,8 +75,16 @@ public class RequestScholarshipByStudentUseCaseImpl implements RequestScholarshi
                             generatedKey = rs.getLong(1);
                         }
                         scholarship.setId(generatedKey);
+                        String action = "Request";
+                        String desc = scholarship.getName() + " " + scholarship.getFamily() + " Requested a scolarship";
+                        Date date = Date.valueOf(LocalDate.now());
 
+                        Long id = AuthenticationService.getInstance().getLoginUser().getId();
+                        Log log = new Log(action, date,id,generatedKey,desc);
+                        LogUseCaseImpl logUseCase = new LogUseCaseImpl();
+                        logUseCase.commitLog(log);
                         System.out.println(scholarship);
+
                         return true;
                     }
                 } catch (ClassNotFoundException e) {

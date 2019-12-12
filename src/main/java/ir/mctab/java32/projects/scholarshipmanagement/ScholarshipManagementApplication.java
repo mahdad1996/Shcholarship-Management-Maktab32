@@ -1,15 +1,19 @@
 package ir.mctab.java32.projects.scholarshipmanagement;
 
 import ir.mctab.java32.projects.scholarshipmanagement.core.share.AuthenticationService;
+import ir.mctab.java32.projects.scholarshipmanagement.core.share.LogUseCaseImpl;
 import ir.mctab.java32.projects.scholarshipmanagement.features.scholarshipverification.impl.*;
 import ir.mctab.java32.projects.scholarshipmanagement.features.scholarshipverification.usecases.*;
 import ir.mctab.java32.projects.scholarshipmanagement.features.usermanagement.impl.LoginUseCaseImpl;
 import ir.mctab.java32.projects.scholarshipmanagement.features.usermanagement.impl.LogoutUseCaseImpl;
 import ir.mctab.java32.projects.scholarshipmanagement.features.usermanagement.usecases.LoginUseCase;
 import ir.mctab.java32.projects.scholarshipmanagement.features.usermanagement.usecases.LogoutUseCase;
+import ir.mctab.java32.projects.scholarshipmanagement.model.Log;
 import ir.mctab.java32.projects.scholarshipmanagement.model.Scholarship;
 import ir.mctab.java32.projects.scholarshipmanagement.model.User;
 
+import java.io.Console;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -33,6 +37,15 @@ public class ScholarshipManagementApplication {
                     String username = scanner.nextLine();
                     System.out.println("Password : ");
                     String password = scanner.nextLine();
+//                    Console console = System.console();
+//
+//                    String username = scanner.nextLine();
+//                    System.out.println("Enter the password: ");
+//
+//                    char[] ps = console.readPassword();
+//                    String password = String.valueOf(ps);
+
+
                     LoginUseCase loginUseCase = new LoginUseCaseImpl();
                     User user = loginUseCase.login(username, password);
                     if (user != null) {
@@ -69,6 +82,16 @@ public class ScholarshipManagementApplication {
                             String scholarshipId = scanner.next();
                             Scholarship scholarship = findScholarshipByStudentUseCase.find(Long.parseLong(scholarshipId));
                             System.out.println(scholarship.toString());
+                            LogUseCaseImpl logUseCase = new LogUseCaseImpl();
+                            List<Log> logs =new ArrayList<>();
+                            logs = logUseCase.showLogs(Long.parseLong(scholarshipId));
+                            for (Log l: logs
+                                 ) {
+                                System.out.println(l.toString());
+
+                            }
+
+
                             break ;
                         }
                         case "logout": {
