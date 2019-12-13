@@ -29,14 +29,7 @@ public class DashboardUseCaseImpl implements DashboardUseCase {
 
 
             }
-            String desc = "dashboard loaded by " + AuthenticationService.getInstance().getLoginUser().getUsername();
-            //Date date = new Date();
-            java.sql.Date date = Date.valueOf(LocalDate.now());
-            String action = "Dashboard";
-            Long id = AuthenticationService.getInstance().getLoginUser().getId();
-            Log log = new Log(action,date,id,id,desc);
-            LogUseCaseImpl logUseCase = new LogUseCaseImpl();
-            logUseCase.commitLog(log);
+
         }
     }
 
